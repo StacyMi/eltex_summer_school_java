@@ -1,9 +1,68 @@
+import Product.Clothes;
+
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.Collections;
 import java.util.UUID;
 
-public class ShoppingCart {
+class ShoppingCart {
 
+    ArrayList <String> list = new ArrayList<>();
+
+    int add(String idClothe, Clothes[] mass) {
+        //UUID idClothe = UUID.fromString(id);
+        int rezult = 0, i;
+        for (i = 0; i < mass.length; i++) {
+            String massID = mass[i].id.toString();
+            if (massID.equals(idClothe)) {
+                list.add(idClothe);
+                rezult = 1;
+            }
+        }
+        return rezult;
+    }
+
+    int delete(String idClothe) {
+        int rezult = find(idClothe);
+        if (rezult == 1) {
+            list.remove(idClothe);
+        }
+        return rezult;
+    }
+
+    private int find(String idClothe) {
+        int rezult = 0;
+
+        // Меняем порядок элементов
+        Collections.shuffle(list);
+        System.out.println(list);
+
+        // Сортируем элементы
+        Collections.sort(list);
+        System.out.println(list);
+
+        // Ищем элемент идентичный искомому
+        int pos = Collections.binarySearch(list, idClothe);
+        if (pos >= 0) {
+            rezult = 1;
+        }
+        return rezult;
+    }
+
+    void print(Clothes[] mass) {
+        System.out.println("______________________________________________");
+        System.out.println("В корзине:\n");
+        int index, i;
+        for (index = 0; index < list.size(); index++) {
+            UUID listID = UUID.fromString(list.get(index));
+            for (i = 0; i < mass.length; i++) {
+                if (mass[i].id.equals(listID)) {
+                    mass[i].readBasket();
+                }
+            }
+        }
+        System.out.println("______________________________________________");
+    }
+/*
     public static int count;
 
     public ArrayList <String> list = new ArrayList<>();
@@ -87,4 +146,5 @@ public class ShoppingCart {
             }
         }
     }
+    */
 }

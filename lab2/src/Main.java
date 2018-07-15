@@ -1,21 +1,26 @@
+import Product.*;
+
 import java.util.Scanner;
 
 public class Main {
 
-    public static final int OBJECT = 5;
+    private static final int OBJECT = 5;
+
 
     public static void main(String[] args) {
 
         //System.out.println("3 вариант! [Входные данные: t_shorts или caps]");
+
+
         String[] capsORt_shorts = {"caps", "t_shorts"};
         int capsORt_shortsInd;
         String caps = "caps";
         String t_shorts = "t_shorts";
         Clothes[] mass = new Clothes[OBJECT];
 
-        System.out.println("№\t\t\t\t\t\tID\t\t\t\t\t\tНазвание\tЦена\tФирма-производитель\n");
+
         for (int i = 0; i < OBJECT; i++) {
-            capsORt_shortsInd = 0 + (int)(Math.random() * capsORt_shorts.length);
+            capsORt_shortsInd = (int)(Math.random() * capsORt_shorts.length);
             String view = capsORt_shorts[capsORt_shortsInd];
             if (view.equals(t_shorts) || view.equals(caps)) {
                 if (view.equals(t_shorts)) {
@@ -26,39 +31,117 @@ public class Main {
                 }
             }
             mass[i].create();
-            mass[i].update();
-            mass[i].read();
+            //mass[i].update();
+            //mass[i].read();
         }
-        /*
-        System.out.println("\nВариант 3\n" +
-                "Коллекция для хранения объектов в классе «корзина»: ArrayList\n" +
-                "Коллекция для хранения объектов в классе «заказы»: LinkedList\n" +
-                "Коллекция для хранения и поиска уникальных идентификаторов: TreeSet\n" +
-                "Коллекция для хранения объектов по времени создания: HashMap");
-*/
-        System.out.println("\nРегистрация пользователя");
-        Credentials user1 = new Credentials();
-        user1.addUser();
-        user1.printUser();
-        user1.editUser();
-/*
+
+        Orders listOrders = new Orders();
+
         int flag = 0;
         while (flag != 1) {
-            int readNumber;
-            System.out.println("\t1\t-\tСоздать заказ");
+            System.out.println("______________________________________________");
+            System.out.println("\t1\t-\tСоздать новый заказ");
             System.out.println("\t2\t-\tЗавершить работу!");
             Scanner sc = new Scanner(System.in);
 
             System.out.print("\nВаш выбор:\t");
-            readNumber = sc.nextInt();
+            int readNumber = sc.nextInt();
             if (readNumber >= 1 && readNumber <= 2) {
                 if (readNumber == 1) {
+                    Clothes.number = 0;
+                    System.out.println("______________________________________________");
+                    System.out.println("№\t\t\t\t\t\tID\t\t\t\t\t\tНазвание\tЦена\tФирма-производитель\n");
+                    for (int i = 0; i < OBJECT; i++) {
+                        mass[i].read();
+                    }
+                    Clothes.number = 0;
 
-                   */
-                    System.out.println("\nДобавление элементов в корзину");
+
+
+                    System.out.println("______________________________________________");
+                    int countClotheInBasket = 0;
+
+                    //System.out.println("\nДобавление элементов в корзину");
+
                     ShoppingCart basket = new ShoppingCart();
-                    basket.editClothes(mass, user1);
-         /*       }
+                    System.out.print("\nID товара, который добавить:\t");
+                    String idClothe = sc.next();
+                    int rezult = basket.add(idClothe, mass);
+                    if (rezult == 1) {
+                        countClotheInBasket++;
+                    } else {
+                        System.out.println("Товара с таким ID нет!");
+                    }
+                    int flagOut = 0;
+                    while (flagOut != 1) {
+                        basket.print(mass);
+                        System.out.println("\t1\t-\tДобавить товар");
+                        System.out.println("\t2\t-\tУдалить товар");
+                        System.out.println("\t3\t-\tОформить заказ");
+
+                        System.out.print("\nВаш выбор:\t");
+                        int readSelect = sc.nextInt();
+                        if (readSelect >= 1 && readSelect <=3) {
+                            if(readSelect == 1){
+                                System.out.print("\nID товара, который добавить:\t");
+                                idClothe = sc.next();
+                                rezult = basket.add(idClothe, mass);
+                                if (rezult == 1) {
+                                    countClotheInBasket++;
+                                } else {
+                                    System.out.println("Товара с таким ID нет!");
+                                }
+                            } else {
+                                if (readSelect == 2) {
+                                    if (countClotheInBasket >= 1) {
+                                        System.out.print("\nID товара, который удалить:\t");
+                                        idClothe = sc.next();
+                                        rezult = basket.delete(idClothe);
+                                        if (rezult == 1) {
+                                            countClotheInBasket--;
+                                        }
+                                    } else {
+                                        System.out.println("Товаров нет в корзине!");
+                                    }
+                                } else {
+                                    flagOut = 1;
+                                }
+                            }
+                        }
+                    }
+
+                   // System.out.println("\nРегистрация пользователя:");
+
+                    Credentials user1 = new Credentials();
+                    user1.add();
+                    int fl = 0;
+                    while (fl != 1) {
+                        System.out.println("\t1\t-\tИзменить данные пользователя");
+                        System.out.println("\t2\t-\tПродолжить оформление заказа");
+
+                        System.out.print("\nВаш выбор:\t");
+                        int read = sc.nextInt();
+                        if (read >= 1 && read <= 2) {
+                            if (read == 1) {
+                                user1.print();
+                                user1.update();
+                            } else {
+                                user1.print();
+                                fl = 1;
+                            }
+                        } else {
+                            System.out.println("Вы ввели не корректные данные!\nПопробуйте еще раз!");
+                        }
+                    }
+
+                    //System.out.println("\nОформление заказа:");
+
+                    listOrders.createBuy(basket, user1, mass);
+
+
+
+
+                }
                 if (readNumber == 2) {
                     flag = 1;
                 }
@@ -68,11 +151,9 @@ public class Main {
             }
 
         }
-*/
-
-
-
-
+        System.out.println("\nВсе текущие заказы, время обработки которых не истекло:");
+        listOrders.testStatusAndTime();
+        listOrders.printAllOrders();
     }
 
 }

@@ -1,63 +1,51 @@
-import javax.xml.bind.SchemaOutputResolver;
-import java.util.ArrayList;
-import java.util.Date;
+import Product.Clothes;
+
 import java.util.LinkedList;
+import java.util.UUID;
 
-public class Orders {
-    public static final int MAX = 20;
-    //private static int index;
+class Orders {
 
-    Order[] order = new Order[MAX];
-    LinkedList<String> link = new LinkedList<>();
+    private LinkedList<Order> link = new LinkedList<>();
+    private SaveIteratorInTreeSet treeSet = new SaveIteratorInTreeSet();
+    private SaveDateCreateOrders hashMap = new SaveDateCreateOrders();
 
-    public void createOrder(ArrayList<String> list, Clothes[] mass, int count){
-        Order orderNew = new Order();
-        orderNew.creat(list, mass);
-        link.add(orderNew.id.toString());
-        order[count] = orderNew;
-
-      /*
-        order[index].creat(list, mass);
-        link.add(order[index].id.toString());
-        index++;
-        */
+    void createBuy(ShoppingCart basket, Credentials user1, Clothes[] mass) {
+        Order newOrder = new Order();
+        newOrder.create(basket, user1, mass);
+        link.add(newOrder);
+        treeSet.add(newOrder.id.toString()); //для поиска по идентификатерам
+        hashMap.addOrderAndDate(newOrder.id.toString(), newOrder.dateWait); //для последующей проверки по дате
     }
-    public void testOrders(int count) {
-        for (int i = 0; i < link.size(); i++) {
-            //System.out.println(order[0].id);
-            //System.out.println(link.get(i));
-            for (int j = 0; j < count; j++)
-                if (order[j].id.toString().equals(link.get(i))) {
 
-                    //System.out.println(order[j].id.toString());
-                    //System.out.println(link.get(i));
-                    Date dateNow = new Date();
-                    //System.out.println(order[j].dateWait);
-                    //System.out.println(dateNow);
-                    if (order[j].dateWait.getTime() < dateNow.getTime()) {
-                        //link.remove(i);
-                        order[j].statusUpdate();
-                    }
-                }
+    void printAllOrders(){
+        int i;
+        for (i = 0; i < link.size(); i++) {
+            int ind = i + 1;
+            System.out.println("**************************************");
+            System.out.println("\t\t\tЗАКАЗ №\t" + ind);
+            System.out.println("**************************************");
+            link.get(i).print();
         }
     }
-    public void print(Credentials user1, int count) {
-        System.out.println("\nЗаказчик:");
-        user1.printUser();
-        System.out.println("Все имеющиеся заказы:");
-        System.out.println("\n______________________________________________");
-        for (int i = 0; i < link.size(); i++) {
-            for (int j = 0; j < count; j++) {
-                if(order[j].id.toString().equals(link.get(i))) {
-                    System.out.println("Заказ\t" + (i+1));
-                    System.out.println("ID заказа:\t" + order[j].id + "\nВремя создания заказа:\t" +
-                            order[j].dateCreate.toString());
-                    System.out.println("Заказ будет обработан(через 20мин.) в:\t" +
-                            order[j].dateWait.toString());
-                    System.out.printf("Статус:\t" + order[j].status);
+
+    void testStatusAndTime(){
+        String[] massWithIdOldOrders;
+        massWithIdOldOrders = hashMap.findOldOrder();
+        UUID idOldOrder;
+        int i, j;
+        for (i = 0; i < massWithIdOldOrders.length; i++) {
+            if (!massWithIdOldOrders[i].equals("")) {
+                idOldOrder = UUID.fromString(massWithIdOldOrders[i]);
+                for (j = 0; j < link.size(); j++) {
+                    if(link.get(j).id == idOldOrder) {
+                        link.remove(j);
+                    }
+                    if(link.get(j).status.equals("Обработан")) {
+                        link.remove(j);
+                    }
                 }
             }
-            System.out.println("\n______________________________________________");
+
         }
     }
 }
