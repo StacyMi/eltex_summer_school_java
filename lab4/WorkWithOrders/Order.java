@@ -5,7 +5,7 @@ import Product.Clothes;
 import java.util.*;
 
 public class Order extends Orders {
-    private static final int MIN = 1;
+    private static final int MSECOND = 1000;
     private static final String STATUS_CREATE = "В ожидании";
     static final String STATUS_END = "Обработан";
 
@@ -28,7 +28,7 @@ public class Order extends Orders {
 
         Calendar cal = new GregorianCalendar();
         cal.setTime(dateCreate);
-        cal.add(Calendar.MINUTE, MIN);
+        cal.add(Calendar.MILLISECOND, MSECOND);
         dateWait = cal.getTime();
         status = STATUS_CREATE;
 
@@ -39,7 +39,7 @@ public class Order extends Orders {
     }
     void print(){
         System.out.println("ID заказа:\t" + this.id + "\nВремя создания заказа:\t" + dateCreate.toString());
-        System.out.println("Заказ будет обработан(через 1мин.) в:\t" + dateWait.toString());
+        System.out.println("Заказ будет обработан(через 1000 милисекунд) в:\t" + dateWait.toString());
         System.out.println("Статус:\t" + status);
         System.out.println("Заказчик:");
         this.userOrder.print();

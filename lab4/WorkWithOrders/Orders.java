@@ -22,20 +22,26 @@ public class Orders<T extends Order> {
 
     public void printAllOrders(){
         int i;
-        for (i = 0; i < link.size(); i++) {
-            int ind = i + 1;
-            System.out.println("**************************************");
-            System.out.println("\t\t\tЗАКАЗ №\t" + ind);
-            System.out.println("**************************************");
-            link.get(i).print();
+
+        if (link.size() != 0) {
+            for (i = 0; i < link.size(); i++) {
+                int ind = i + 1;
+                System.out.println( "**************************************" );
+                System.out.println( "\t\t\tЗАКАЗ №\t" + ind );
+                System.out.println( "**************************************" );
+                link.get( i ).print();
+            }
         }
     }
 
     public void deleteStatusProcessed(){
-        int ind;
-        for (ind = 0; ind < link.size(); ind++) {
+        int ind = link.size();
+        ind--;
+        while (ind != -1) {
+            System.out.println("i" + ind + "  " + link.get( ind ).status);
             if(link.get( ind ).status.equals( Order.STATUS_END ))  {
                 link.remove( ind );
+                ind--;
             }
         }
     }

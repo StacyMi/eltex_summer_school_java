@@ -72,7 +72,7 @@ public class Main {
 
                     Thread threadUpdateWait = new Thread(new ACheckWait( orders ));
                     try {
-                        threadUpdateWait.sleep(60000);
+                        threadUpdateWait.sleep(1000);
                         threadUpdateWait.start();
                         threadUpdateWait.join();
                     } catch (InterruptedException e) {
@@ -83,7 +83,7 @@ public class Main {
                     if (readNumber == 2) {
                         Thread threadUpdateProcessed = new Thread( new ACheckProcessed( orders ) );
                         try {
-
+                            threadUpdateProcessed.sleep(100);
                             threadUpdateProcessed.start();
                             threadUpdateProcessed.join();
                         } catch (InterruptedException e) {
